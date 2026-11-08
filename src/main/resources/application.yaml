@@ -1,3 +1,9 @@
 spring:
   application:
     name: api-gateway
+
+  # Port, routes and timeouts come from the Config Server: banking-config/api-gateway.yml and
+  # api-gateway-<profile>.yml; where Eureka is, from banking-config/application.yml. The
+  # gateway has no secrets, so unlike the services it does not read Vault.
+  config:
+    import: "configserver:${CONFIG_SERVER_URL:http://localhost:8888}"

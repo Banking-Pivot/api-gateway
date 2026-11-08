@@ -1,0 +1,28 @@
+# Same routes and timeouts as banking-config/api-gateway.yml, served by the stub Config Server.
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          httpclient:
+            connect-timeout: 2000
+            response-timeout: 5s
+          routes:
+            - id: customer-service
+              uri: lb://customer-service
+              predicates:
+                - Path=/customers/**
+            - id: account-service
+              uri: lb://account-service
+              predicates:
+                - Path=/accounts/**
+            - id: credit-service
+              uri: lb://credit-service
+              predicates:
+                - Path=/credits/**
+
+# Eureka plays no part in the tests: the load balancer finds the stub services through the
+# simple discovery client, whose instances the test adds.
+eureka:
+  client:
+    enabled: false
